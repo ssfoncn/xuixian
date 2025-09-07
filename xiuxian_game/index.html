@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>修仙挂机单机游戏</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/game.js" defer></script>
+</head>
+<body>
+    <div class="game-container">
+        <!-- 游戏标题 -->
+        <div class="game-title">
+            <h1>修仙挂机</h1>
+        </div>
+        
+        <!-- 核心数据展示区域 -->
+        <div class="data-display">
+            <!-- 养成数据 -->
+            <div class="data-section">
+                <h2>养成数据</h2>
+                <div class="data-item">
+                    <span class="data-label">当前境界：</span>
+                    <span id="current-stage" class="data-value">炼气期 1层</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">修为值：</span>
+                    <div class="value-with-icon">
+                        <img src="assets/images/cultivation-icon.svg" alt="修为" class="data-icon">
+                        <span id="cultivation-points" class="data-value">0/500</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">灵根等级：</span>
+                    <span id="spiritual-root" class="data-value">木灵根 1级 (+10% 修为/秒)</span>
+                </div>
+            </div>
+            
+            <!-- 资源数据 -->
+            <div class="data-section">
+                <h2>资源数据</h2>
+                <div class="data-item">
+                    <span class="data-label">灵石：</span>
+                    <div class="value-with-icon">
+                        <img src="assets/images/spirit-stone-icon.svg" alt="灵石" class="data-icon">
+                        <span id="spirit-stones" class="data-value">100</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">突破丹：</span>
+                    <div class="value-with-icon">
+                        <img src="assets/images/breakthrough-pill-icon.svg" alt="突破丹" class="data-icon">
+                        <span id="breakthrough-pills" class="data-value">0</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">修为丹：</span>
+                    <div class="value-with-icon">
+                        <img src="assets/images/cultivation-pill-icon.svg" alt="修为丹" class="data-icon">
+                        <span id="cultivation-pills" class="data-value">3</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 挂机数据 -->
+            <div class="data-section">
+                <h2>挂机数据</h2>
+                <div class="data-item">
+                    <span class="data-label">当前收益：</span>
+                    <span id="current-income" class="data-value">4 修为/秒，0.2 灵石/秒</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">离线可领：</span>
+                    <span id="offline-reward" class="data-value">0小时0分</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">突破祝福值：</span>
+                    <span id="blessing-value" class="data-value">0/100</span>
+                </div>
+            </div>
+        </div>
+        
+            <!-- 仙宠数据 -->
+            <div class="data-section">
+                <h2>仙宠数据</h2>
+                <div class="data-item">
+                    <span class="data-label">当前仙宠：</span>
+                    <div class="value-with-icon">
+                        <img src="assets/images/pet-icon.svg" alt="仙宠" class="data-icon">
+                        <span id="current-pet" class="data-value">无</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">仙宠加成：</span>
+                    <span id="pet-bonus" class="data-value">0% 修为，0% 灵石</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">御灵诀：</span>
+                    <span id="pet-skill-level" class="data-value">1级 (+5% 仙宠效果)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心玩法按钮区域 -->
+        <div class="game-buttons">
+            <button id="use-cultivation-pill" class="game-button">使用修为丹</button>
+            <button id="breakthrough" class="game-button">境界突破</button>
+            <button id="buy-breakthrough-pill" class="game-button">兑换突破丹</button>
+            <button id="summon-pet" class="game-button">召唤仙宠</button>
+            <button id="upgrade-pet-skill" class="game-button">升级御灵诀</button>
+            <button id="join-clan" class="game-button">加入门派</button>
+            <button id="clan-mission" class="game-button">门派任务</button>
+            <button id="upgrade-clan-skill" class="game-button">升级门派技能</button>
+            <button id="challenge-tower" class="game-button">挑战塔</button>
+            <button id="save-game" class="game-button">手动存档</button>
+        </div>
+
+        <!-- 门派弹窗 (初始隐藏) -->
+        <div id="clan-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3 id="clan-modal-title">选择门派</h3>
+                <div id="clan-list" class="modal-list">
+                    <div class="modal-item" data-clan="青云门">青云门 (+15% 修为收益)</div>
+                    <div class="modal-item" data-clan="天玄宗">天玄宗 (+10% 灵石收益)</div>
+                    <div class="modal-item" data-clan="御灵派">御灵派 (+5% 仙宠效果)</div>
+                    <div class="modal-item" data-clan="飘渺宫">飘渺宫 (+10% 突破成功率)</div>
+                </div>
+                <button id="close-clan-modal" class="modal-button">关闭</button>
+            </div>
+        </div>
+
+        <!-- 挑战塔弹窗 (初始隐藏) -->
+        <div id="tower-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3 id="tower-modal-title">挑战塔</h3>
+                <div class="modal-info">
+                    <p>当前层数：<span id="current-tower-level">0</span></p>
+                    <p>最高层数：<span id="highest-tower-level">0</span></p>
+                    <p>通关奖励：<span id="tower-reward">修为+1000，灵石+500</span></p>
+                </div>
+                <button id="start-tower-challenge" class="modal-button">开始挑战</button>
+                <button id="close-tower-modal" class="modal-button">关闭</button>
+            </div>
+        </div>
+        
+        <!-- 离线收益弹窗 (初始隐藏) -->
+        <div id="offline-reward-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>离线收益</h3>
+                <p>您离线了 <span id="offline-time">0</span> 小时</p>
+                <p>获得修为：<span id="offline-cultivation">0</span></p>
+                <p>获得灵石：<span id="offline-stones">0</span></p>
+                <button id="claim-offline-reward" class="modal-button">领取奖励</button>
+            </div>
+        </div>
+        
+        <!-- 突破结果弹窗 (初始隐藏) -->
+        <div id="breakthrough-result-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3 id="breakthrough-result-title">突破结果</h3>
+                <p id="breakthrough-result-text">突破成功！</p>
+                <button id="close-breakthrough-result" class="modal-button">确定</button>
+            </div>
+        </div>
+        
+        <!-- 游戏底部信息 -->
+        <div class="game-footer">
+            <p>单机修仙挂机游戏 - 自动存档</p>
+        </div>
+
+        <!-- 门派数据 -->
+        <div class="data-display">
+            <div class="data-section">
+                <h2>门派数据</h2>
+                <div class="data-item">
+                    <span class="data-label">当前门派：</span>
+                    <span id="current-clan" class="data-value">无</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">门派贡献：</span>
+                    <span id="clan-contribution" class="data-value">0</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">门派技能：</span>
+                    <span id="clan-skill-level" class="data-value">1级 (+5% 门派效果)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 挑战塔数据 -->
+        <div class="data-display">
+            <div class="data-section">
+                <h2>挑战塔数据</h2>
+                <div class="data-item">
+                    <span class="data-label">当前层数：</span>
+                    <span id="tower-level" class="data-value">0</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">最高层数：</span>
+                    <span id="tower-record" class="data-value">0</span>
+                </div>
+                <div class="data-item">
+                    <span class="data-label">可挑战层数：</span>
+                    <span id="next-tower-level" class="data-value">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
